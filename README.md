@@ -1,6 +1,8 @@
-![refine example](logo.png)
+<a href="https://github.com/refinedev/refine" target="_blank">
+  <img src="logo.png" />
+</a>
 
- ### refine codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld-example-apps) spec and API.
+### refine codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld-example-apps) spec and API.
 
 ### [Demo](https://refine-real-world.netlify.app/)&nbsp;&nbsp;&nbsp;&nbsp;[RealWorld](https://github.com/gothinkster/realworld)
 
