@@ -5,17 +5,17 @@ import {
     useDelete,
     useNavigation,
     useUpdate,
-} from "@pankod/refine-core";
-import routerProvider from "@pankod/refine-react-router-v6";
-import { useForm } from "@pankod/refine-react-hook-form";
+} from "@refinedev/core";
+import routerProvider from "@refinedev/react-router-v6/legacy";
+import { useForm } from "@refinedev/react-hook-form";
 
-import { IArticle } from "interfaces";
+import { IArticle, IUser } from "interfaces";
 
 const { useParams, Link } = routerProvider;
 
 export const ArticlePage: React.FC = () => {
-    const params = useParams();
-    const { data: user, isFetching: userIsFetching } = useGetIdentity();
+    const params = useParams<{ slug: string }>();
+    const { data: user, isFetching: userIsFetching } = useGetIdentity<IUser>();
 
     const { push } = useNavigation();
 
@@ -30,7 +30,7 @@ export const ArticlePage: React.FC = () => {
     } = useOne<IArticle>({
         resource: "articles",
         id: params?.slug,
-        metaData: {
+        meta: {
             resource: "article",
         },
         queryOptions: {
@@ -43,7 +43,7 @@ export const ArticlePage: React.FC = () => {
     const { data: commentData, refetch: refetchArticleComments } = useOne({
         resource: "articles",
         id: params.slug,
-        metaData: {
+        meta: {
             resource: "comments",
             getComments: true,
         },
@@ -90,7 +90,7 @@ export const ArticlePage: React.FC = () => {
         updateMutate({
             resource: "articles",
             id: params?.slug,
-            metaData: {
+            meta: {
                 URLSuffix: "favorite",
             },
             values: "",
@@ -101,7 +101,7 @@ export const ArticlePage: React.FC = () => {
         deleteMutate({
             resource: "articles",
             id: params?.slug,
-            metaData: {
+            meta: {
                 URLSuffix: "favorite",
             },
         });
@@ -112,7 +112,7 @@ export const ArticlePage: React.FC = () => {
             {
                 resource: "profiles",
                 id: username,
-                metaData: {
+                meta: {
                     resource: "follow",
                 },
                 values: "",
@@ -130,7 +130,7 @@ export const ArticlePage: React.FC = () => {
             {
                 resource: "profiles",
                 id: username,
-                metaData: {
+                meta: {
                     resource: "follow",
                 },
             },
@@ -152,13 +152,13 @@ export const ArticlePage: React.FC = () => {
 
                             <div className="article-meta">
                                 <Link
-                                    to={`/profile/@${article?.data.author.username}`}
+                                    to={`/profile/${article?.data.author.username}`}
                                 >
                                     <img src={article?.data.author.image} />
                                 </Link>
                                 <div className="info">
                                     <Link
-                                        to={`/profile/@${article?.data.author.username}`}
+                                        to={`/profile/${article?.data.author.username}`}
                                         className="author"
                                     >
                                         {article?.data.author.username}
@@ -282,13 +282,13 @@ export const ArticlePage: React.FC = () => {
                         <div className="article-actions">
                             <div className="article-meta">
                                 <Link
-                                    to={`/profile/@${article?.data.author.username}`}
+                                    to={`/profile/${article?.data.author.username}`}
                                 >
                                     <img src={article?.data.author.image} />
                                 </Link>
                                 <div className="info">
                                     <Link
-                                        to={`/profile/@${article?.data.author.username}`}
+                                        to={`/profile/{article?.data.author.username}`}
                                         className="author"
                                     >
                                         {article?.data.author.username}
@@ -422,7 +422,8 @@ export const ArticlePage: React.FC = () => {
                                 <br />
 
                                 <div className="card">
-                                    {commentData?.data.map((item: any) => { // eslint-disable-line 
+                                    {commentData?.data.map((item: any) => {
+                                        // eslint-disable-line
                                         return (
                                             <>
                                                 <div className="card-block">
@@ -432,7 +433,7 @@ export const ArticlePage: React.FC = () => {
                                                 </div>
                                                 <div className="card-footer">
                                                     <Link
-                                                        to={`/profile/@${article?.data.author.username}`}
+                                                        to={`/profile/${article?.data.author.username}`}
                                                         className="comment-author"
                                                     >
                                                         <img
@@ -445,7 +446,7 @@ export const ArticlePage: React.FC = () => {
                                                     </Link>
                                                     &nbsp;
                                                     <Link
-                                                        to={`/profile/@${article?.data.author.username}`}
+                                                        to={`/profile/${article?.data.author.username}`}
                                                         className="comment-author"
                                                     >
                                                         {item?.author.username}

@@ -1,4 +1,4 @@
-import { FieldErrors } from "@pankod/refine-react-hook-form";
+import { FieldErrors } from "react-hook-form";
 
 type ErrorProps = {
     errors: FieldErrors<Record<string, string>>;

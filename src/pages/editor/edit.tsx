@@ -1,6 +1,6 @@
-import { HttpError, useNavigation } from "@pankod/refine-core";
-import { useForm } from "@pankod/refine-react-hook-form";
-import routerProvider from "@pankod/refine-react-router-v6";
+import { HttpError, useNavigation } from "@refinedev/core";
+import { useForm } from "@refinedev/react-hook-form";
+import routerProvider from "@refinedev/react-router-v6/legacy";
 import { ErrorList } from "components/Error";
 
 const { useParams } = routerProvider;
@@ -17,7 +17,7 @@ type IArticlesVariables = {
 
 export const EditArticlePage: React.FC = () => {
     const { push } = useNavigation();
-    const params = useParams();
+    const params = useParams<{ slug: string }>();
 
     const {
         refineCore: { onFinish, formLoading },

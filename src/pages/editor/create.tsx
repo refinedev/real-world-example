@@ -1,5 +1,5 @@
-import { HttpError, useNavigation } from "@pankod/refine-core";
-import { useForm } from "@pankod/refine-react-hook-form";
+import { HttpError, useNavigation } from "@refinedev/core";
+import { useForm } from "@refinedev/react-hook-form";
 import { ErrorList } from "components/Error";
 
 type IArticlesVariables = {

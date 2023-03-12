@@ -1,4 +1,4 @@
-import { LayoutProps } from "@pankod/refine-core";
+import { LayoutProps } from "@refinedev/core";
 
 import { Header, Footer } from "components";
 

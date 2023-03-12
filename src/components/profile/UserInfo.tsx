@@ -1,4 +1,4 @@
-import { GetOneResponse, useNavigation } from "@pankod/refine-core";
+import { GetOneResponse, useNavigation } from "@refinedev/core";
 
 import { IProfile, IUser } from "interfaces";
 

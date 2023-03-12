@@ -1,5 +1,5 @@
-import { CrudFilters, CrudOperators, DataProvider } from "@pankod/refine-core";
-import restDataProvider from "@pankod/refine-simple-rest";
+import { CrudFilters, CrudOperators, DataProvider } from "@refinedev/core";
+import restDataProvider from "@refinedev/simple-rest";
 import { stringify } from "query-string";
 import { AxiosInstance } from "axios";
 

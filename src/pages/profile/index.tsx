@@ -5,8 +5,8 @@ import {
     useDelete,
     useUpdate,
     useOne,
-} from "@pankod/refine-core";
-import routerProvider from "@pankod/refine-react-router-v6";
+} from "@refinedev/core";
+import routerProvider from "@refinedev/react-router-v6/legacy";
 import dayjs from "dayjs";
 
 import { ArticleList } from "components/article";
@@ -22,13 +22,14 @@ export const ProfilePage: React.FC = () => {
     const { mutate: updateMutation } = useUpdate();
     const { mutate: deleteMutation } = useDelete();
 
-    const params = useParams();
+    const params = useParams<any>();
+    const username = params?.username;
 
     const { tableQueryResult, current, pageCount, setCurrent, setFilters } =
         useTable<IArticle>({
             resource: "articles",
             queryOptions: {
-                enabled: params?.username !== undefined,
+                enabled: username !== undefined,
             },
         });
 
@@ -36,7 +37,7 @@ export const ProfilePage: React.FC = () => {
         setFilters([
             {
                 field: "author",
-                value: params?.username,
+                value: username,
                 operator: "eq",
             },
             {
@@ -45,16 +46,16 @@ export const ProfilePage: React.FC = () => {
                 operator: "eq",
             },
         ]);
-    }, [params?.username]);
+    }, [username]);
 
     useEffect(() => {
         setCurrent(1);
-    }, [params?.username, params?.page]);
+    }, [username, params?.page]);
 
     const { data: profileData, isLoading: isLoading } = useOne<IProfile>({
         resource: "profiles",
-        id: params?.username,
-        metaData: {
+        id: username,
+        meta: {
             resource: "profile",
         },
     });
@@ -63,7 +64,7 @@ export const ProfilePage: React.FC = () => {
         updateMutation({
             resource: "articles",
             id: slug,
-            metaData: {
+            meta: {
                 URLSuffix: "favorite",
             },
             values: {},
@@ -74,7 +75,7 @@ export const ProfilePage: React.FC = () => {
         deleteMutation({
             resource: "articles",
             id: slug,
-            metaData: {
+            meta: {
                 URLSuffix: "favorite",
             },
         });
@@ -84,7 +85,7 @@ export const ProfilePage: React.FC = () => {
         updateMutation({
             resource: "profiles",
             id: username,
-            metaData: {
+            meta: {
                 URLSuffix: "follow",
             },
             values: {},
@@ -95,7 +96,7 @@ export const ProfilePage: React.FC = () => {
         deleteMutation({
             resource: "profiles",
             id: username,
-            metaData: {
+            meta: {
                 URLSuffix: "follow",
             },
         });
@@ -137,7 +138,7 @@ export const ProfilePage: React.FC = () => {
                             </div>
                         )}
 
-                        {params?.username &&
+                        {username &&
                             tableQueryResult?.data?.data?.map((item) => {
                                 return (
                                     <ArticleList

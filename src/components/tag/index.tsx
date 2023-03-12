@@ -1,5 +1,5 @@
-import routerProvider from "@pankod/refine-react-router-v6";
-import { CrudFilters } from "@pankod/refine-core";
+import routerProvider from "@refinedev/react-router-v6/legacy";
+import { CrudFilters } from "@refinedev/core";
 
 type TagProps = {
     tags: string[][] | undefined;

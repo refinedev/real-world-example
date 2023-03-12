@@ -1,10 +1,13 @@
-import { useGetIdentity } from "@pankod/refine-core";
+import { useGetIdentity } from "@refinedev/core";
 
-import routerProvider from "@pankod/refine-react-router-v6";
+import routerProvider from "@refinedev/react-router-v6/legacy";
+import { IUser } from "interfaces";
 
 const { Link } = routerProvider;
 export const Header: React.FC = () => {
-    const { data: user, isSuccess: isLoggedIn } = useGetIdentity();
+    const { data: user } = useGetIdentity<IUser>();
+
+    const isLoggedIn = !!user;
 
     return (
         <>
@@ -49,7 +52,7 @@ export const Header: React.FC = () => {
                                 <li className="nav-item">
                                     <Link
                                         className="nav-link"
-                                        to={`profile/@${user?.username}`}
+                                        to={`profile/${user?.username}`}
                                     >
                                         <img
                                             src={user?.image}

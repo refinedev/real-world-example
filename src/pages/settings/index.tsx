@@ -1,5 +1,5 @@
-import { useNavigation, useLogout } from "@pankod/refine-core";
-import { useForm } from "@pankod/refine-react-hook-form";
+import { useNavigation, useLogout } from "@refinedev/core";
+import { useForm } from "@refinedev/react-hook-form";
 
 import { TOKEN_KEY } from "../../constants";
 
@@ -20,7 +20,7 @@ export const SettingsPage: React.FC = () => {
             redirect: false,
             onMutationSuccess: ({ data }) => {
                 localStorage.setItem(TOKEN_KEY, data.user.token);
-                push(`/profile/@${data.user.username}`);
+                push(`/profile/${data.user.username}`);
             },
         },
     });

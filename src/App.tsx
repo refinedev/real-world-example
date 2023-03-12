@@ -1,7 +1,12 @@
-import { Refine } from "@pankod/refine-core";
-import routerProvider, {
-    HashRouterComponent,
-} from "@pankod/refine-react-router-v6";
+import { Authenticated, ErrorComponent, Refine } from "@refinedev/core";
+import routerProvider, { CatchAllNavigate } from "@refinedev/react-router-v6";
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    Outlet,
+    Navigate,
+} from "react-router-dom";
 import axios, { AxiosRequestConfig } from "axios";
 
 import { authProvider } from "./authProvider";
@@ -36,52 +41,71 @@ axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
 
 function App() {
     return (
-        <Refine
-            routerProvider={{
-                ...routerProvider,
-                routes: [
-                    {
-                        element: <LoginPage />,
-                        path: "/login",
-                        // layout: true,
-                    },
-                    {
-                        element: <RegisterPage />,
-                        path: "/register",
-                        layout: true,
-                    },
-                    {
-                        element: <ArticlePage />,
-                        path: "/article/:slug",
-                        layout: true,
-                    },
-                    {
-                        element: <ProfilePage />,
-                        path: "profile/@:username",
-                        layout: true,
-                    },
-                    {
-                        element: <ProfilePage />,
-                        path: "profile/@:username/:page",
-                        layout: true,
-                    },
-                    {
-                        element: <EditArticlePage />,
-                        path: "editor/:slug",
-                        layout: true,
-                    },
-                ],
-                RouterComponent: HashRouterComponent,
-            }}
-            dataProvider={dataProvider(axiosInstance)}
-            authProvider={authProvider(axiosInstance)}
-            DashboardPage={HomePage}
-            resources={[
-                { name: "settings", list: SettingsPage },
-                { name: "editor", list: EditorPage },
-            ]}
-            Layout={Layout}
-        />
+        <BrowserRouter>
+            <Refine
+                routerProvider={routerProvider}
+                dataProvider={dataProvider(axiosInstance)}
+                authProvider={authProvider(axiosInstance)}
+                resources={[
+                    { name: "settings", list: "/settings" },
+                    { name: "editor", list: "/editor" },
+                ]}
+            >
+                <Routes>
+                    <Route
+                        element={
+                            <Authenticated
+                                fallback={<CatchAllNavigate to="/login" />}
+                            >
+                                <Layout>
+                                    <Outlet />
+                                </Layout>
+                            </Authenticated>
+                        }
+                    >
+                        <Route index element={<HomePage />} />
+                        <Route path="editor" element={<EditorPage />} />
+                        <Route path="settings" element={<SettingsPage />} />
+                        <Route path="article/:slug" element={<ArticlePage />} />
+                        <Route
+                            path="profile/:username"
+                            element={<ProfilePage />}
+                        />
+                        <Route
+                            path="profile/:username/:page"
+                            element={<ProfilePage />}
+                        />
+                        <Route
+                            path="editor/:slug"
+                            element={<EditArticlePage />}
+                        />
+                    </Route>
+
+                    <Route
+                        element={
+                            <Authenticated fallback={<Outlet />}>
+                                <Navigate to="/" />
+                            </Authenticated>
+                        }
+                    >
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/register" element={<RegisterPage />} />
+                    </Route>
+
+                    <Route
+                        element={
+                            <Authenticated>
+                                <Layout>
+                                    <Outlet />
+                                </Layout>
+                            </Authenticated>
+                        }
+                    >
+                        <Route path="*" element={<ErrorComponent />} />
+                    </Route>
+                </Routes>
+            </Refine>
+        </BrowserRouter>
     );
 }
 

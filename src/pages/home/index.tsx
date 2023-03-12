@@ -5,8 +5,8 @@ import {
     useTable,
     useUpdate,
     useDelete,
-} from "@pankod/refine-core";
-import routerProvider from "@pankod/refine-react-router-v6";
+} from "@refinedev/core";
+import routerProvider from "@refinedev/react-router-v6/legacy";
 
 import { ArticleList } from "components/article";
 
@@ -42,11 +42,15 @@ export const HomePage: React.FC = () => {
         pageCount,
     } = useTable<IArticle>({
         resource: activeTab === "yourFeed" ? "articles/feed" : "articles",
-        metaData: {
+
+        meta: {
             resource: "articles",
         },
-        initialCurrent: 1,
-        initialPageSize: 6,
+
+        pagination: {
+            current: 1,
+            pageSize: 6,
+        },
     });
 
     const favoriteUnFavoriteIslLoading =
@@ -58,7 +62,7 @@ export const HomePage: React.FC = () => {
         updateMutation({
             resource: "articles",
             id: slug,
-            metaData: {
+            meta: {
                 URLSuffix: "favorite",
             },
             values: {},
@@ -69,7 +73,7 @@ export const HomePage: React.FC = () => {
         deleteMutation({
             resource: "articles",
             id: slug,
-            metaData: {
+            meta: {
                 URLSuffix: "favorite",
             },
         });

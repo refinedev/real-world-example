@@ -1,9 +1,9 @@
-import { AuthProvider } from "@pankod/refine-core";
+import { AuthBindings } from "@refinedev/core";
 
 import { TOKEN_KEY, API_URL } from "./constants";
 import axios, { AxiosInstance } from "axios";
 
-export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => {
+export const authProvider = (axiosInstance: AxiosInstance): AuthBindings => {
     return {
         login: async ({
             user,
@@ -16,33 +16,64 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => {
                 });
 
                 localStorage.setItem(TOKEN_KEY, data.user.token);
-            } catch (error) {
-                return Promise.reject(error);
+
+                return {
+                    success: true,
+                    redirectTo: "/",
+                };
+            } catch (error: any) {
+                return {
+                    success: false,
+                    error,
+                };
+            }
+        },
+        logout: async (props) => {
+            localStorage.removeItem(TOKEN_KEY);
+            return {
+                success: true,
+                redirectTo: props?.redirectPath || "/login",
+            };
+        },
+        onError: async (error: any) => {
+            if (error?.response?.status === 401) {
+                return {
+                    redirectTo: "/register",
+                    error,
+                };
             }
 
-            return Promise.resolve("/");
+            return {
+                error,
+            };
         },
-        logout: (props) => {
-            localStorage.removeItem(TOKEN_KEY);
-            return Promise.resolve(props?.redirectPath);
-        },
-        checkError: (error) => {
-            if (error?.response?.status === 401) {
-                return Promise.reject("/register");
-            }
-            return Promise.resolve();
-        },
-        checkAuth: () => Promise.resolve(),
-        getPermissions: () => Promise.resolve(),
-        getUserIdentity: async () => {
+        check: async () => {
             const token = localStorage.getItem(TOKEN_KEY);
             if (!token) {
-                return Promise.reject();
+                return {
+                    authenticated: false,
+                    error: new Error("No token found"),
+                    redirectTo: "/login",
+                };
+            }
+            return {
+                authenticated: true,
+            };
+        },
+        getPermissions: async () => null,
+        getIdentity: async () => {
+            const token = localStorage.getItem(TOKEN_KEY);
+            if (!token) {
+                return null;
             }
 
-            const userInfo = await axiosInstance.get(`${API_URL}/user`);
-
-            return Promise.resolve(userInfo.data.user);
+            try {
+                const userInfo = await axiosInstance.get(`${API_URL}/user`);
+                return userInfo.data.user;
+            } catch (error) {
+                console.warn(error);
+                return null;
+            }
         },
     };
 };

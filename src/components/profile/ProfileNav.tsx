@@ -1,5 +1,5 @@
-import { CrudFilters, GetOneResponse } from "@pankod/refine-core";
-import routerProvider from "@pankod/refine-react-router-v6";
+import { CrudFilters, GetOneResponse } from "@refinedev/core";
+import routerProvider from "@refinedev/react-router-v6/legacy";
 
 import { IProfile } from "interfaces";
 
@@ -24,7 +24,7 @@ export const ProfileNav: React.FC<ProfileNavProps> = ({
                         className={`nav-link ${
                             params?.page === "favorites" ? "" : "active"
                         }`}
-                        to={`/profile/@${profileData?.data.username}`}
+                        to={`/profile/${profileData?.data.username}`}
                         onClick={() => {
                             setFilters([
                                 {
@@ -48,7 +48,7 @@ export const ProfileNav: React.FC<ProfileNavProps> = ({
                         className={`nav-link ${
                             params?.page === "favorites" ? "active" : ""
                         }`}
-                        to={`/profile/@${profileData?.data.username}/favorites`}
+                        to={`/profile/${profileData?.data.username}/favorites`}
                         onClick={() => {
                             setFilters([
                                 {
