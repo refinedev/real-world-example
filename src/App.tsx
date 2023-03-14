@@ -40,10 +40,6 @@ function App() {
         routerProvider={routerProvider}
         dataProvider={dataProvider(axiosInstance)}
         authProvider={authProvider(axiosInstance)}
-        resources={[
-          { name: "settings", list: "/settings" },
-          { name: "editor", list: "/editor" },
-        ]}
       >
         <Routes>
           <Route
