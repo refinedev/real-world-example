@@ -12,7 +12,9 @@ import { Pagination } from 'components/Pagination'
 export const HomePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'global' | 'yourFeed' | 'tags'>('global')
 
-  const { isSuccess: isLoggedIn, isLoading: isFetching } = useGetIdentity()
+  const { data: user, isLoading: isFetching } = useGetIdentity()
+  const isLoggedIn = !!user
+
   const { mutate: updateMutation, isLoading: updateMutationIsLoading } = useUpdate()
   const { mutate: deleteMutation, isLoading: deleteMutationIsLoading } = useDelete()
 
