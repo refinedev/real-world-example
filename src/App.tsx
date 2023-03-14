@@ -1,6 +1,6 @@
 import { Authenticated, ErrorComponent, Refine } from '@refinedev/core'
 import routerProvider from '@refinedev/react-router-v6'
-import { BrowserRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom'
+import { HashRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom'
 import axios, { AxiosRequestConfig } from 'axios'
 
 import { authProvider } from './authProvider'
@@ -35,7 +35,7 @@ axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Refine
         routerProvider={routerProvider}
         dataProvider={dataProvider(axiosInstance)}
@@ -67,7 +67,7 @@ function App() {
           </Route>
         </Routes>
       </Refine>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
