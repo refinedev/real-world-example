@@ -1,138 +1,174 @@
-import { useEffect, useState } from 'react'
-import { useGetIdentity, useList, useTable, useUpdate, useDelete } from '@refinedev/core'
-import { Link } from 'react-router-dom'
-import { ArticleList } from 'components/article'
+import { useEffect, useState } from "react";
+import {
+  useGetIdentity,
+  useList,
+  useTable,
+  useUpdate,
+  useDelete,
+} from "@refinedev/core";
+import { Link } from "react-router-dom";
+import { ArticleList } from "components/article";
 
-import dayjs from 'dayjs'
-import { IArticle, ITag } from 'interfaces'
-import { Tag } from 'components/tag'
-import { Banner } from 'components/home'
-import { Pagination } from 'components/Pagination'
+import dayjs from "dayjs";
+import { IArticle, ITag } from "interfaces";
+import { Tag } from "components/tag";
+import { Banner } from "components/home";
+import { Pagination } from "components/Pagination";
 
 export const HomePage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'global' | 'yourFeed' | 'tags'>('global')
+  const [activeTab, setActiveTab] = useState<"global" | "yourFeed" | "tags">(
+    "global"
+  );
 
-  const { data: user, isLoading: isFetching } = useGetIdentity()
-  const isLoggedIn = !!user
+  const { data: user, isLoading: isFetching } = useGetIdentity();
+  const isLoggedIn = !!user;
 
-  const { mutate: updateMutation, isLoading: updateMutationIsLoading } = useUpdate()
-  const { mutate: deleteMutation, isLoading: deleteMutationIsLoading } = useDelete()
+  const { mutate: updateMutation, isLoading: updateMutationIsLoading } =
+    useUpdate();
+  const { mutate: deleteMutation, isLoading: deleteMutationIsLoading } =
+    useDelete();
 
   const tagList = useList<ITag[]>({
-    resource: 'tags',
-  })
+    resource: "tags",
+  });
 
-  const { tableQueryResult, current, setCurrent, filters, setFilters, pageCount } = useTable<IArticle>({
-    resource: activeTab === 'yourFeed' ? 'articles/feed' : 'articles',
+  const {
+    tableQueryResult,
+    current,
+    setCurrent,
+    filters,
+    setFilters,
+    pageCount,
+  } = useTable<IArticle>({
+    resource: activeTab === "yourFeed" ? "articles/feed" : "articles",
 
     meta: {
-      resource: 'articles',
+      resource: "articles",
     },
 
     pagination: {
       current: 1,
       pageSize: 6,
     },
-  })
+  });
 
-  const favoriteUnFavoriteIslLoading = tableQueryResult.isFetching || updateMutationIsLoading || deleteMutationIsLoading
+  const favoriteUnFavoriteIslLoading =
+    tableQueryResult.isFetching ||
+    updateMutationIsLoading ||
+    deleteMutationIsLoading;
 
   const favArticle = (slug: string) => {
     updateMutation({
-      resource: 'articles',
+      resource: "articles",
       id: slug,
       meta: {
-        URLSuffix: 'favorite',
+        URLSuffix: "favorite",
       },
       values: {},
-    })
-  }
+    });
+  };
 
   const unFavArticle = (slug: string) => {
     deleteMutation({
-      resource: 'articles',
+      resource: "articles",
       id: slug,
       meta: {
-        URLSuffix: 'favorite',
+        URLSuffix: "favorite",
       },
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     if (isLoggedIn) {
-      setActiveTab('yourFeed')
+      setActiveTab("yourFeed");
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn]);
 
   useEffect(() => {
-    setCurrent(1)
-  }, [activeTab])
+    setCurrent(1);
+  }, [activeTab]);
 
   if (isFetching) {
-    return null
+    return null;
   }
 
   return (
-    <div className='home-page'>
+    <div className="home-page">
       {!isLoggedIn && !isFetching && <Banner />}
-      <div className='page container'>
-        <div className='row'>
-          <div className='col-md-9'>
-            <div className='feed-toggle'>
-              <ul className='nav nav-pills outline-active'>
+      <div className="page container">
+        <div className="row">
+          <div className="col-md-9">
+            <div className="feed-toggle">
+              <ul className="nav nav-pills outline-active">
                 {isLoggedIn && (
-                  <li className='nav-item'>
+                  <li className="nav-item">
                     <Link
-                      to={'/'}
-                      className={`nav-link ${activeTab === 'yourFeed' ? 'active' : ''}`}
+                      to={"/"}
+                      className={`nav-link ${
+                        activeTab === "yourFeed" ? "active" : ""
+                      }`}
                       onClick={() => {
-                        setActiveTab('yourFeed')
+                        setActiveTab("yourFeed");
                         setFilters([
                           {
-                            field: 'tag',
-                            operator: 'eq',
+                            field: "tag",
+                            operator: "eq",
                             value: undefined,
                           },
-                        ])
-                      }}>
+                        ]);
+                      }}
+                    >
                       Your Feed
                     </Link>
                   </li>
                 )}
-                <li className='nav-item'>
+                <li className="nav-item">
                   <Link
-                    to={'/'}
-                    className={`nav-link ${activeTab === 'global' ? 'active' : ''}`}
+                    to={"/"}
+                    className={`nav-link ${
+                      activeTab === "global" ? "active" : ""
+                    }`}
                     onClick={() => {
-                      setActiveTab('global')
+                      setActiveTab("global");
                       setFilters([
                         {
-                          field: 'tag',
-                          operator: 'eq',
+                          field: "tag",
+                          operator: "eq",
                           value: undefined,
                         },
-                      ])
-                    }}>
+                      ]);
+                    }}
+                  >
                     Global Feed
                   </Link>
                 </li>
                 {filters.map((filter, index) => {
                   return (
-                    <li className='nav-item' key={index}>
-                      <Link to='/' className={`nav-link ${activeTab === 'tags' ? 'active' : ''}`}>
+                    <li className="nav-item" key={index}>
+                      <Link
+                        to="/"
+                        className={`nav-link ${
+                          activeTab === "tags" ? "active" : ""
+                        }`}
+                      >
                         # {filter.value}
                       </Link>
                     </li>
-                  )
+                  );
                 })}
               </ul>
             </div>
 
-            {tableQueryResult.isLoading && <div className='article-preview'>Loading articles...</div>}
-
-            {!tableQueryResult.data?.data?.length && !tableQueryResult.isFetching && (
-              <div className='article-preview'>No articles are here... yet</div>
+            {tableQueryResult.isLoading && (
+              <div className="article-preview">Loading articles...</div>
             )}
+
+            {!tableQueryResult.data?.data?.length &&
+              !tableQueryResult.isFetching && (
+                <div className="article-preview">
+                  No articles are here... yet
+                </div>
+              )}
 
             {tableQueryResult?.data?.data.map((item) => {
               return (
@@ -142,29 +178,33 @@ export const HomePage: React.FC = () => {
                   author={item.author.username}
                   image={item.author.image}
                   title={item.title}
-                  createdAt={dayjs(item.createdAt).format('MMM DD, YYYY')}
+                  createdAt={dayjs(item.createdAt).format("MMM DD, YYYY")}
                   favCount={item.favoritesCount}
                   description={item.description}
                   tagList={item.tagList}
                   favArticle={(slug: string) => {
-                    item.favorited ? unFavArticle(slug) : favArticle(slug)
+                    item.favorited ? unFavArticle(slug) : favArticle(slug);
                   }}
                   isItemFavorited={item.favorited}
                   isItemLoading={favoriteUnFavoriteIslLoading}
                 />
-              )
+              );
             })}
           </div>
           <Tag
             tags={tagList.data?.data}
             setFilter={setFilters}
             onTagClick={() => {
-              setActiveTab('tags')
+              setActiveTab("tags");
             }}
           />
         </div>
-        <Pagination current={current} setCurrent={setCurrent} total={pageCount} />
+        <Pagination
+          current={current}
+          setCurrent={setCurrent}
+          total={pageCount}
+        />
       </div>
     </div>
-  )
-}
+  );
+};
