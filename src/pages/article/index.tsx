@@ -117,9 +117,9 @@ export const ArticlePage: React.FC = () => {
         resource: "profiles",
         id: username,
         meta: {
-          resource: "follow",
+          URLSuffix: "follow",
         },
-        values: "",
+        values: {},
       },
       {
         onSuccess: () => {
@@ -135,7 +135,7 @@ export const ArticlePage: React.FC = () => {
         resource: "profiles",
         id: username,
         meta: {
-          resource: "follow",
+          URLSuffix: "follow",
         },
       },
       {
