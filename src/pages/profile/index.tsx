@@ -30,15 +30,11 @@ export const ProfilePage: React.FC = () => {
         enabled: username !== undefined,
       },
       filters: {
+        defaultBehavior: "replace",
         initial: [
           {
             field: "author",
             value: username,
-            operator: "eq",
-          },
-          {
-            field: "favorited",
-            value: undefined,
             operator: "eq",
           },
         ],
