@@ -2,6 +2,7 @@ import { CrudFilters, GetOneResponse } from "@refinedev/core";
 import { Link } from "react-router-dom";
 
 import { IProfile } from "interfaces";
+import { useEffect } from "react";
 
 type ProfileNavProps = {
   params: { page: string; username: string };
@@ -14,6 +15,22 @@ export const ProfileNav: React.FC<ProfileNavProps> = ({
   profileData,
   setFilters,
 }) => {
+  useEffect(() => {
+    if (params?.page === "favorites") {
+      setFilters([
+        {
+          field: "author",
+          value: undefined,
+          operator: "eq",
+        },
+        {
+          field: "favorited",
+          value: params?.username,
+          operator: "eq",
+        },
+      ]);
+    }
+  }, []);
   return (
     <div className="articles-toggle">
       <ul className="nav nav-pills outline-active">

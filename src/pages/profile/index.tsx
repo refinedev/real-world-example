@@ -29,22 +29,21 @@ export const ProfilePage: React.FC = () => {
       queryOptions: {
         enabled: username !== undefined,
       },
+      filters: {
+        initial: [
+          {
+            field: "author",
+            value: username,
+            operator: "eq",
+          },
+          {
+            field: "favorited",
+            value: undefined,
+            operator: "eq",
+          },
+        ],
+      },
     });
-
-  useEffect(() => {
-    setFilters([
-      {
-        field: "author",
-        value: username,
-        operator: "eq",
-      },
-      {
-        field: "favorited",
-        value: undefined,
-        operator: "eq",
-      },
-    ]);
-  }, [username]);
 
   useEffect(() => {
     setCurrent(1);
