@@ -1,6 +1,6 @@
 import { HttpError, useNavigation } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
-import { ErrorList } from "components/Error";
+import { ErrorList } from "../../components/Error";
 
 type IArticlesVariables = {
   article: {

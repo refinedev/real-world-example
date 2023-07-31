@@ -6,13 +6,13 @@ import axios, { AxiosRequestConfig } from "axios";
 import { authProvider } from "./authProvider";
 import { dataProvider } from "./dataProvider";
 
-import { Layout } from "components";
+import { Layout } from "./components";
 import { LoginPage, RegisterPage } from "./pages/auth";
-import { HomePage } from "pages/home";
-import { ProfilePage } from "pages/profile";
-import { SettingsPage } from "pages/settings";
-import { EditorPage, EditArticlePage } from "pages/editor";
-import { ArticlePage } from "pages/article";
+import { HomePage } from "./pages/home";
+import { ProfilePage } from "./pages/profile";
+import { SettingsPage } from "./pages/settings";
+import { EditorPage, EditArticlePage } from "./pages/editor";
+import { ArticlePage } from "./pages/article";
 
 import { TOKEN_KEY } from "./constants";
 

@@ -1,7 +1,7 @@
 import { HttpError, useLogin } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { Link } from "react-router-dom";
-import { ErrorList } from "components";
+import { ErrorList } from "../../components";
 
 type IRegisterVariables = {
   user: {

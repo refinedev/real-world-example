@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import { useForm } from "@refinedev/react-hook-form";
 
-import { IArticle, IUser } from "interfaces";
+import { IArticle, IUser } from "../../interfaces";
 
 export const ArticlePage: React.FC = () => {
   const parse = useParse();

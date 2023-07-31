@@ -8,11 +8,11 @@ import {
   useParse,
 } from "@refinedev/core";
 import dayjs from "dayjs";
-import { ArticleList } from "components/article";
-import { Pagination } from "components/Pagination";
-import { UserInfo, ProfileNav } from "components/profile";
+import { ArticleList } from "../../components/article";
+import { Pagination } from "../../components/Pagination";
+import { UserInfo, ProfileNav } from "../../components/profile";
 
-import { IArticle, IProfile, IUser } from "interfaces";
+import { IArticle, IProfile, IUser } from "../../interfaces";
 
 export const ProfilePage: React.FC = () => {
   const { data: user } = useGetIdentity<IUser>();

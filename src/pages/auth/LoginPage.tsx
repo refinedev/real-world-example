@@ -2,7 +2,7 @@ import { HttpError, useLogin } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { Link } from "react-router-dom";
 
-import { Header, ErrorList } from "components";
+import { Header, ErrorList } from "../../components";
 
 type ILoginVariables = {
   user: {

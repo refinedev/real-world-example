@@ -1,6 +1,6 @@
 import { GetOneResponse, useNavigation } from "@refinedev/core";
 
-import { IProfile, IUser } from "interfaces";
+import { IProfile, IUser } from "../../interfaces";
 
 type UserInfoProps = {
   loading: boolean;
