@@ -2,14 +2,9 @@ import { HttpError, useLogin } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { Link } from "react-router-dom";
 
-import { Header, ErrorList } from "../../components";
-
 type ILoginVariables = {
-  user: {
-    password: string;
-    email: string;
-  };
-  api: Record<string, string>;
+  password: string;
+  email: string;
 };
 export const LoginPage: React.FC = () => {
   const {
@@ -32,27 +27,26 @@ export const LoginPage: React.FC = () => {
               <Link to={`/register`}>Need an account?</Link>
             </p>
 
-            {errors.api && <ErrorList errors={errors.api} />}
             <form>
               <fieldset disabled={isLoading}>
                 <fieldset className="form-group">
                   <input
-                    {...register("user.email", {
+                    {...register("email", {
                       required: true,
                     })}
                     className="form-control form-control-lg"
                     type="text"
                     placeholder="Email"
                   />
-                  {errors.user?.email && (
+                  {errors?.email && (
                     <ul className="error-messages">
-                      <li>This field is required</li>
+                      <li>{errors.email.message}</li>
                     </ul>
                   )}
                 </fieldset>
                 <fieldset className="form-group">
                   <input
-                    {...register("user.password", {
+                    {...register("password", {
                       required: true,
                     })}
                     className="form-control form-control-lg"
@@ -60,9 +54,9 @@ export const LoginPage: React.FC = () => {
                     placeholder="Password"
                     autoComplete=""
                   />
-                  {errors.user?.password && (
+                  {errors?.password && (
                     <ul className="error-messages">
-                      <li>This field is required</li>
+                      <li>{errors.password.message}</li>
                     </ul>
                   )}
                 </fieldset>
@@ -70,14 +64,7 @@ export const LoginPage: React.FC = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     clearErrors();
-                    handleSubmit((values) => {
-                      return login(values, {
-                        // eslint-disable-next-line
-                        onError: (error: any) => {
-                          setError("api", error?.response?.data.errors);
-                        },
-                      });
-                    })();
+                    handleSubmit((values) => login(values))();
                   }}
                   className="btn btn-lg btn-primary pull-xs-right"
                 >

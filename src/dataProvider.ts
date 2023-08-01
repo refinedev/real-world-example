@@ -40,7 +40,7 @@ const generateFilter = (filters?: CrudFilters) => {
 export const dataProvider = (axios: AxiosInstance): DataProvider => {
   return {
     ...restDataProvider(API_URL, axios),
-    getList: async ({ resource, pagination, filters, metaData }) => {
+    getList: async ({ resource, pagination, filters, meta }) => {
       const url = `${API_URL}/${resource}`;
 
       // pagination
@@ -62,38 +62,55 @@ export const dataProvider = (axios: AxiosInstance): DataProvider => {
       );
 
       return {
-        data: data[metaData?.resource ?? resource],
-        total: data[`${metaData?.resource ?? resource}Count`] || undefined,
+        data: data[meta?.resource ?? resource],
+        total: data[`${meta?.resource ?? resource}Count`] || undefined,
       };
     },
-    getOne: async ({ resource, id, metaData }) => {
-      const url = metaData?.getComments
+    getOne: async ({ resource, id, meta }) => {
+      const url = meta?.getComments
         ? `${API_URL}/${resource}/${id}/comments`
         : `${API_URL}/${resource}/${id}`;
 
       const { data } = await axios.get(url);
 
       return {
-        data: data[metaData?.resource || resource],
+        data: data[meta?.resource || resource],
       };
     },
-    update: async ({ resource, id, variables, metaData }) => {
-      const url = metaData?.URLSuffix
-        ? `${API_URL}/${resource}/${id}/${metaData.URLSuffix}`
-        : `${API_URL}/${resource}/${id}`;
+    create: async ({ resource, variables, meta }) => {
+      const url = `${API_URL}/${resource}`;
 
-      const { data } = metaData?.URLSuffix
-        ? await axios.post(url)
-        : await axios.put(url, variables);
+      const { headers } = meta ?? {};
+
+      const { data } = await axios.post(url, {
+        [meta?.resource || resource]: variables
+      }, {
+        headers,
+      });
 
       return {
-        data,
+        data: data[meta?.resource || resource],
+      };
+    },
+    update: async ({ resource, id, variables, meta }) => {
+      const url = meta?.URLSuffix
+        ? `${API_URL}/${resource}/${id}/${meta.URLSuffix}`
+        : `${API_URL}/${resource}/${id}`;
+
+      const { data } = meta?.URLSuffix
+        ? await axios.post(url)
+        : await axios.put(url, {
+          [meta?.resource || resource]: variables,
+        });
+
+      return {
+        data: data[meta?.resource || resource],
       };
     },
 
-    deleteOne: async ({ resource, id, variables, metaData }) => {
-      const url = metaData?.URLSuffix
-        ? `${API_URL}/${resource}/${id}/${metaData.URLSuffix}`
+    deleteOne: async ({ resource, id, variables, meta }) => {
+      const url = meta?.URLSuffix
+        ? `${API_URL}/${resource}/${id}/${meta.URLSuffix}`
         : `${API_URL}/${resource}/${id}`;
 
       const { data } = await axios.delete(url, {
