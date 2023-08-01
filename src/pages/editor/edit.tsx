@@ -25,7 +25,7 @@ export const EditArticlePage: React.FC = () => {
   } = useForm<
     IArticlesVariables,
     HttpError,
-    IArticlesVariables,
+    IArticlesVariables
   >({
     refineCoreProps: {
       resource: "articles",
