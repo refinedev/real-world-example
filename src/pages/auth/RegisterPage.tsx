@@ -44,7 +44,7 @@ export const RegisterPage: React.FC = () => {
                 <fieldset className="form-group">
                   <input
                     {...register("username", {
-                      // required: true,
+                      required: true,
                     })}
                     className="form-control form-control-lg"
                     type="text"
@@ -59,7 +59,7 @@ export const RegisterPage: React.FC = () => {
                 <fieldset className="form-group">
                   <input
                     {...register("email", {
-                      // required: true,
+                      required: true,
                     })}
                     className="form-control form-control-lg"
                     type="text"
@@ -74,7 +74,7 @@ export const RegisterPage: React.FC = () => {
                 <fieldset className="form-group">
                   <input
                     {...register("password", {
-                      // required: true,
+                      required: true,
                     })}
                     className="form-control form-control-lg"
                     type="password"
