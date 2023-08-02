@@ -1,11 +1,15 @@
 import { HttpError, useLogin } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { Link } from "react-router-dom";
+import { ErrorList } from "../../components";
 
 type IRegisterVariables = {
-  password: string;
-  username: string;
-  email: string;
+  user: {
+    password: string;
+    username: string;
+    email: string;
+  };
+  api: Record<string, string>;
 };
 export const RegisterPage: React.FC = () => {
   const { mutate: login, isLoading: isLoadingLogin } = useLogin();
@@ -17,14 +21,18 @@ export const RegisterPage: React.FC = () => {
     },
     register,
     handleSubmit,
+    setError,
     clearErrors,
     formState: { errors },
   } = useForm<IRegisterVariables, HttpError, IRegisterVariables>({
     refineCoreProps: {
       resource: "users",
       redirect: false,
+      onMutationError: (error) => {
+        setError("api", error.response.data.errors);
+      },
       meta: {
-        resource: "user",
+        ignoreResourceWrapper: true,
       }
     },
   });
@@ -39,50 +47,52 @@ export const RegisterPage: React.FC = () => {
               <Link to={"/login"}>Have an account?</Link>
             </p>
 
+            {errors.api && <ErrorList errors={errors.api} />}
+
             <form>
               <fieldset disabled={isLoadingLogin || isLoadingRegister}>
                 <fieldset className="form-group">
                   <input
-                    {...register("username", {
+                    {...register("user.username", {
                       required: true,
                     })}
                     className="form-control form-control-lg"
                     type="text"
                     placeholder="Your Name"
                   />
-                  {errors?.username && (
+                  {errors?.user?.username && (
                     <ul className="error-messages">
-                      <span>{errors.username?.message}</span>
+                      <span>This field is required</span>
                     </ul>
                   )}
                 </fieldset>
                 <fieldset className="form-group">
                   <input
-                    {...register("email", {
+                    {...register("user.email", {
                       required: true,
                     })}
                     className="form-control form-control-lg"
                     type="text"
                     placeholder="Email"
                   />
-                  {errors?.email && (
+                  {errors?.user?.email && (
                     <ul className="error-messages">
-                      <span>{errors.email?.message}</span>
+                      <span>This field is required</span>
                     </ul>
                   )}
                 </fieldset>
                 <fieldset className="form-group">
                   <input
-                    {...register("password", {
+                    {...register("user.password", {
                       required: true,
                     })}
                     className="form-control form-control-lg"
                     type="password"
                     placeholder="Password"
                   />
-                  {errors?.password && (
+                  {errors?.user?.password && (
                     <ul className="error-messages">
-                      <span>{errors.password?.message}</span>
+                      <span>This field is required</span>
                     </ul>
                   )}
                 </fieldset>

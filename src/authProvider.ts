@@ -5,13 +5,10 @@ import axios, { AxiosInstance } from "axios";
 
 export const authProvider = (axiosInstance: AxiosInstance): AuthBindings => {
   return {
-    login: async ({ email, password }: { email: string; password: string }) => {
+    login: async ({ user }: { user: { email: string; password: string } }) => {
       try {
         const { data } = await axios.post(`${API_URL}/users/login`, {
-          user: {
-            email,
-            password,
-          }
+          user,
         });
 
         localStorage.setItem(TOKEN_KEY, data.user.token);

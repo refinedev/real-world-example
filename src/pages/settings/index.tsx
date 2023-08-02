@@ -1,16 +1,7 @@
-import { useNavigation, useLogout, HttpError } from "@refinedev/core";
+import { useNavigation, useLogout } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 
 import { TOKEN_KEY } from "../../constants";
-
-type IUserVariables = {
-  image: string;
-  token: string;
-  username: string;
-  bio: string;
-  email: string;
-  password: string;
-};
 
 export const SettingsPage: React.FC = () => {
   const { push } = useNavigation();
@@ -21,18 +12,25 @@ export const SettingsPage: React.FC = () => {
     handleSubmit,
     formState: { errors },
     refineCore: { onFinish, formLoading },
-  } = useForm<IUserVariables, HttpError, IUserVariables>({
+  } = useForm({
     refineCoreProps: {
       id: "",
       action: "edit",
       resource: "user",
       redirect: false,
       onMutationSuccess: ({ data }) => {
-        localStorage.setItem(TOKEN_KEY, data.token);
-        push(`/profile/${data.username}`);
+        localStorage.setItem(TOKEN_KEY, data.user.token);
+        push(`/profile/${data.user.username}`);
+      },
+      meta: {
+        ignoreResourceWrapper: true,
       },
     },
   });
+
+  const onSubmit = (data: Record<string, string>) => {
+    onFinish({ user: data });
+  };
 
   return (
     <div className="settings-page">
@@ -52,9 +50,9 @@ export const SettingsPage: React.FC = () => {
                     type="text"
                     placeholder="URL of profile picture"
                   />
-                  {errors?.image && (
+                  {errors.image && (
                     <ul className="error-messages">
-                      <li>{errors.image.message}</li>
+                      <li>This field is required</li>
                     </ul>
                   )}
                 </fieldset>
@@ -67,9 +65,9 @@ export const SettingsPage: React.FC = () => {
                     type="text"
                     placeholder="Your Name"
                   />
-                  {errors?.username && (
+                  {errors.username && (
                     <ul className="error-messages">
-                      <li>{errors.username.message}</li>
+                      <li>This field is required</li>
                     </ul>
                   )}
                 </fieldset>
@@ -90,9 +88,9 @@ export const SettingsPage: React.FC = () => {
                     type="text"
                     placeholder="Email"
                   />
-                  {errors?.email && (
+                  {errors.title && (
                     <ul className="error-messages">
-                      <li>{errors.email.message}</li>
+                      <li>This field is required</li>
                     </ul>
                   )}
                 </fieldset>
@@ -108,6 +106,10 @@ export const SettingsPage: React.FC = () => {
                   className="btn btn-lg btn-primary pull-xs-right"
                   type="submit"
                   disabled={formLoading}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSubmit(onSubmit)();
+                  }}
                 >
                   Update Settings
                 </button>

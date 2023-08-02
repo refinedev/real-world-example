@@ -82,9 +82,12 @@ export const dataProvider = (axios: AxiosInstance): DataProvider => {
 
       const { headers } = meta ?? {};
 
-      const { data } = await axios.post(url, {
-        [meta?.resource || resource]: variables
-      }, {
+      const ignoreResourceWrapper = meta?.ignoreResourceWrapper ?? false;
+      const newVariables = ignoreResourceWrapper ? variables : {
+        [meta?.resource || resource]: variables,
+      };
+
+      const { data } = await axios.post(url, newVariables, {
         headers,
       });
 
@@ -97,11 +100,14 @@ export const dataProvider = (axios: AxiosInstance): DataProvider => {
         ? `${API_URL}/${resource}/${id}/${meta.URLSuffix}`
         : `${API_URL}/${resource}/${id}`;
 
+      const ignoreResourceWrapper = meta?.ignoreResourceWrapper ?? false;
+      const newVariables = ignoreResourceWrapper ? variables : {
+        [meta?.resource || resource]: variables,
+      };
+
       const { data } = meta?.URLSuffix
         ? await axios.post(url)
-        : await axios.put(url, {
-          [meta?.resource || resource]: variables,
-        });
+        : await axios.put(url, newVariables);
 
       return {
         data: data[meta?.resource || resource],

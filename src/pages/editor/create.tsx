@@ -60,7 +60,7 @@ export const EditorPage: React.FC = () => {
                   />
                   {errors?.title && (
                     <ul className="error-messages">
-                      <li>{errors.title.message}</li>
+                      <li>{errors.title.message || "This field is required"}</li>
                     </ul>
                   )}
                 </fieldset>
@@ -75,7 +75,7 @@ export const EditorPage: React.FC = () => {
                   />
                   {errors?.description && (
                     <ul className="error-messages">
-                      <li>{errors.description.message}</li>
+                      <li>{errors.description.message || "This field is required"}</li>
                     </ul>
                   )}
                 </fieldset>
@@ -90,7 +90,7 @@ export const EditorPage: React.FC = () => {
                   ></textarea>
                   {errors?.body && (
                     <ul className="error-messages">
-                      <li>{errors.body.message}</li>
+                      <li>{errors.body.message || "This field is required"}</li>
                     </ul>
                   )}
                 </fieldset>
