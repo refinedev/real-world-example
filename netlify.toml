@@ -163,4 +163,3 @@
   command = "yarn start"
   port = 8888
   publish = "dist"
-
