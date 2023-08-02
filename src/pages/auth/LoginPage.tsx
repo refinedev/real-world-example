@@ -18,7 +18,13 @@ export const LoginPage: React.FC = () => {
     setError,
     clearErrors,
     formState: { errors },
-  } = useForm<ILoginVariables, HttpError, ILoginVariables>();
+  } = useForm<ILoginVariables, HttpError, ILoginVariables>({
+    refineCoreProps: {
+      meta: {
+        ignoreResourceWrapper: true,
+      }
+    }
+  });
 
   const { mutate: login, isLoading } = useLogin();
 
