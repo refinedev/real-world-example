@@ -1,15 +1,12 @@
 import { HttpError, useNavigation, useParse } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
-import { ErrorList } from "components/Error";
 
 type IArticlesVariables = {
-  article: {
-    title: string;
-    description: string;
-    body: string;
-    tagList: string[];
-    slug: string;
-  };
+  title: string;
+  description: string;
+  body: string;
+  tagList: string[];
+  slug: string;
 };
 
 export const EditArticlePage: React.FC = () => {
@@ -22,16 +19,13 @@ export const EditArticlePage: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
     clearErrors,
     setValue,
     getValues,
   } = useForm<
     IArticlesVariables,
     HttpError,
-    IArticlesVariables & {
-      api: Record<string, string>;
-    }
+    IArticlesVariables
   >({
     refineCoreProps: {
       resource: "articles",
@@ -41,71 +35,63 @@ export const EditArticlePage: React.FC = () => {
       metaData: {
         resource: "article",
       },
-      onMutationError: (error) => {
-        setError("api", error?.response?.data.errors);
-      },
       onMutationSuccess: (response) => {
-        push(`/article/${response.data.article.slug}`);
-      },
-      queryOptions: {
-        // eslint-disable-next-line
-        select: (data) => ({ data: { article: data?.data } } as any),
+        push(`/article/${response.data.slug}`);
       },
     },
   });
 
-  const tags = getValues("article.tagList") ?? [];
+  const tags = getValues("tagList") ?? [];
 
   return (
     <div className="editor-page">
       <div className="page container">
         <div className="row">
           <div className="col-md-10 offset-md-1 col-xs-12">
-            {errors.api && <ErrorList errors={errors.api} />}
             <form>
               <fieldset disabled={formLoading}>
                 <fieldset className="form-group">
                   <input
-                    {...register("article.title", {
+                    {...register("title", {
                       required: true,
                     })}
                     type="text"
                     className="form-control form-control-lg"
                     placeholder="Article Title"
                   />
-                  {errors.article?.title && (
+                  {errors?.title && (
                     <ul className="error-messages">
-                      <li>This field is required</li>
+                      <li>{errors.title.message || "This field is required"}</li>
                     </ul>
                   )}
                 </fieldset>
                 <fieldset className="form-group">
                   <input
-                    {...register("article.description", {
+                    {...register("description", {
                       required: true,
                     })}
                     type="text"
                     className="form-control"
                     placeholder="What's this article about?"
                   />
-                  {errors.article?.description && (
+                  {errors?.description && (
                     <ul className="error-messages">
-                      <li>This field is required</li>
+                      <li>{errors.description.message || "This field is required"}</li>
                     </ul>
                   )}
                 </fieldset>
                 <fieldset className="form-group">
                   <textarea
-                    {...register("article.body", {
+                    {...register("body", {
                       required: true,
                     })}
                     className="form-control"
                     rows={8}
                     placeholder="Write your article (in markdown)"
                   ></textarea>
-                  {errors.article?.body && (
+                  {errors?.body && (
                     <ul className="error-messages">
-                      <li>This field is required</li>
+                      <li>{errors.body.message || "This field is required"}</li>
                     </ul>
                   )}
                 </fieldset>
@@ -119,7 +105,7 @@ export const EditArticlePage: React.FC = () => {
                       if (e.key === "Enter") {
                         const value = (e.target as HTMLInputElement).value;
                         if (!tags.includes(value)) {
-                          setValue("article.tagList", [...tags, value], {
+                          setValue("tagList", [...tags, value], {
                             shouldValidate: true,
                           });
                           (e.target as HTMLInputElement).value = "";
@@ -135,7 +121,7 @@ export const EditArticlePage: React.FC = () => {
                             className="ion-close-round"
                             onClick={() => {
                               setValue(
-                                "article.tagList",
+                                "tagList",
                                 tags.filter((tag) => tag !== item),
                                 {
                                   shouldValidate: true,

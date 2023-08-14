@@ -1,6 +1,6 @@
 import { LayoutProps } from "@refinedev/core";
 
-import { Header, Footer } from "components";
+import { Header, Footer } from "../components";
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (

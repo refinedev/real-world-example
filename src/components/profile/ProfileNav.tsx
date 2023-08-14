@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { CrudFilters, GetOneResponse } from "@refinedev/core";
 import { Link } from "react-router-dom";
 
-import { IProfile } from "interfaces";
+import { IProfile } from "../../interfaces";
 
 type ProfileNavProps = {
   params: { page: string; username: string };

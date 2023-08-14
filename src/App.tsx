@@ -1,4 +1,4 @@
-import { Authenticated, ErrorComponent, Refine } from "@refinedev/core";
+import { Authenticated, ErrorComponent, HttpError, Refine } from "@refinedev/core";
 import routerProvider from "@refinedev/react-router-v6";
 import { HashRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 import axios, { AxiosRequestConfig } from "axios";
@@ -6,13 +6,13 @@ import axios, { AxiosRequestConfig } from "axios";
 import { authProvider } from "./authProvider";
 import { dataProvider } from "./dataProvider";
 
-import { Layout } from "components";
+import { Layout } from "./components";
 import { LoginPage, RegisterPage } from "./pages/auth";
-import { HomePage } from "pages/home";
-import { ProfilePage } from "pages/profile";
-import { SettingsPage } from "pages/settings";
-import { EditorPage, EditArticlePage } from "pages/editor";
-import { ArticlePage } from "pages/article";
+import { HomePage } from "./pages/home";
+import { ProfilePage } from "./pages/profile";
+import { SettingsPage } from "./pages/settings";
+import { EditorPage, EditArticlePage } from "./pages/editor";
+import { ArticlePage } from "./pages/article";
 
 import { TOKEN_KEY } from "./constants";
 
@@ -32,6 +32,24 @@ axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
 
   return request;
 });
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+      return response;
+  },
+  (error) => {
+      const customError: HttpError = {
+        ...error,
+        errors: error.response?.data?.errors,
+        message: error.response?.data?.message,
+        statusCode: error.response?.status,
+      };
+
+      return Promise.reject(customError);
+  },
+);
+
+export { axiosInstance };
 
 function App() {
   return (

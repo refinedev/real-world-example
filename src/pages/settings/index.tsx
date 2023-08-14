@@ -22,6 +22,9 @@ export const SettingsPage: React.FC = () => {
         localStorage.setItem(TOKEN_KEY, data.user.token);
         push(`/profile/${data.user.username}`);
       },
+      meta: {
+        ignoreResourceWrapper: true,
+      },
     },
   });
 

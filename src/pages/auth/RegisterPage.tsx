@@ -1,7 +1,7 @@
 import { HttpError, useLogin } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { Link } from "react-router-dom";
-import { ErrorList } from "components";
+import { ErrorList } from "../../components";
 
 type IRegisterVariables = {
   user: {
@@ -31,6 +31,9 @@ export const RegisterPage: React.FC = () => {
       onMutationError: (error) => {
         setError("api", error.response.data.errors);
       },
+      meta: {
+        ignoreResourceWrapper: true,
+      }
     },
   });
 

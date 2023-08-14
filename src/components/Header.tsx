@@ -1,6 +1,6 @@
 import { useGetIdentity } from "@refinedev/core";
 import { Link } from "react-router-dom";
-import { IUser } from "interfaces";
+import { IUser } from "../interfaces";
 
 export const Header: React.FC = () => {
   const { data: user } = useGetIdentity<IUser>();

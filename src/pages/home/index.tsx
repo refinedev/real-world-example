@@ -7,13 +7,13 @@ import {
   useDelete,
 } from "@refinedev/core";
 import { Link } from "react-router-dom";
-import { ArticleList } from "components/article";
+import { ArticleList } from "../../components/article";
 
 import dayjs from "dayjs";
-import { IArticle, ITag } from "interfaces";
-import { Tag } from "components/tag";
-import { Banner } from "components/home";
-import { Pagination } from "components/Pagination";
+import { IArticle, ITag } from "../../interfaces";
+import { Tag } from "../../components/tag";
+import { Banner } from "../../components/home";
+import { Pagination } from "../../components/Pagination";
 
 export const HomePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"global" | "yourFeed" | "tags">(
